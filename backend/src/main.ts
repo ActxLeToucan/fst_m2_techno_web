@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import * as Config from 'config';
-import { AppConfig } from './app.types';
+import { AppConfig, OpenApiConfig } from './app.types';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import { TruckModule } from './truck/truck.module';
+import { HealthcheckModule } from './healthcheck/healthcheck.module';
 
-async function bootstrap (config: AppConfig) {
+async function bootstrap (config: AppConfig, openApiConfig: OpenApiConfig) {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
         new FastifyAdapter({ logger: true }),
@@ -18,6 +21,15 @@ async function bootstrap (config: AppConfig) {
             forbidNonWhitelisted: true,
         })
     );
+
+    // openapi
+    const truckManagerDoc = SwaggerModule.createDocument(app, openApiOptions(openApiConfig), {
+        include: [
+            HealthcheckModule,
+            TruckModule
+        ],
+    });
+    SwaggerModule.setup(openApiConfig.path, app, truckManagerDoc);
 
     // launch server
     await app.listen({
@@ -32,4 +44,16 @@ async function bootstrap (config: AppConfig) {
     });
 }
 
-bootstrap(Config.get<AppConfig>('server'));
+bootstrap(
+    Config.get<AppConfig>('server'),
+    Config.get<OpenApiConfig>('openapi')
+);
+
+function openApiOptions (config: OpenApiConfig): Omit<OpenAPIObject, 'paths'> {
+    const documentBuilder = new DocumentBuilder()
+        .setTitle(config.title)
+        .setDescription(config.description)
+        .setVersion(config.version);
+    config.tags.forEach(tag => documentBuilder.addTag(tag));
+    return documentBuilder.build();
+}

@@ -1,4 +1,4 @@
-export interface Truck {
+export class Truck {
     id: string; // immatriculation
     brand: string;
     model: string;
