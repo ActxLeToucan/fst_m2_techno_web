@@ -8,3 +8,5 @@ openapi:
   tags:
     - Truck
   path: docs
+mongodb:
+  uri: "mongodb://0.0.0.0:27017/truckManager"
