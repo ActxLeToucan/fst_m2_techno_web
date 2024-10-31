@@ -6,6 +6,7 @@ import { ListTrucksService } from '../../services/listTruck/truck.service';
 import { TruckEntity } from '../../services/listTruck/entities/truck.entity';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ToastService } from '../../services/toastService/toast.service';
+import { UpdateTruckDto } from '../../services/listTruck/dto/update-truck.dto';
 
 @Component({
   selector: 'app-list-truck',
@@ -66,15 +67,45 @@ export class ListTruckComponent implements OnInit {
   }
 
   openUpdateModal(truck: any, updateModal: TemplateRef<any>) {
-	this.truckToUpdate = { ...truck }; // Clone the truck to update
-	this.openVerticallyCentered(updateModal); // Open the modal
+    this.truckToUpdate = { ...truck }; // Clone the truck to update
+    this.openVerticallyCentered(updateModal); // Open the modal
   }
 
-  updateTruck(updatedTruck: any) {
-    // Logic to update the truck, e.g., make an API call
-    console.log('Updating truck', updatedTruck);
-    // After updating, you may want to refresh the trucks list or close the modal
-  }
+  updateTruck() {
+    // Create a new payload object
+    const payload: UpdateTruckDto = {
+        plate: this.truckToUpdate.plate,
+        brand: this.truckToUpdate.brand,
+        model: this.truckToUpdate.model,
+        capacity: this.truckToUpdate.capacity,
+        status: this.truckToUpdate.status,
+        year: this.truckToUpdate.year,
+        lastMaintenance: this.truckToUpdate.lastMaintenance,
+    };
+
+    // Log the payload for debugging
+    console.log('Payload being sent:', payload);
+
+    // Call the update service
+    this.listTrucksService.updateById(this.truckToUpdate.id, payload).subscribe({
+        next: (updatedTruck) => {
+            console.log('Truck updated successfully:', updatedTruck);
+            this.toastService.show({
+                template: `Truck ${updatedTruck.id} updated successfully.`,
+                classname: 'bg-success text-light',
+            });
+            this.modalService.dismissAll(); // Close the modal
+            window.location.reload();
+        },
+        error: (error) => {
+            console.error('Error updating truck:', error);
+            this.toastService.show({
+                template: `Failed to update truck ${this.truckToUpdate.id}.`,
+                classname: 'bg-danger text-light',
+            });
+        },
+    });
+}
 
   openVerticallyCentered(content: TemplateRef<any>) {
     this.modalService.open(content, { centered: true });

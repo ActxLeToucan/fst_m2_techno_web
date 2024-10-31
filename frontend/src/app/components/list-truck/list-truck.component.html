@@ -50,44 +50,50 @@
 </div>
 
 <ng-template #updateModal let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title">Update Truck Details</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<form #updateForm="ngForm" (ngSubmit)="updateTruck(truckToUpdate)">
-			<div class="mb-3">
-				<label for="plate" class="form-label">Plate</label>
-				<input type="text" id="plate" class="form-control" [(ngModel)]="truckToUpdate.plate" name="plate" required>
-			</div>
-			<div class="mb-3">
-				<label for="brand" class="form-label">Brand</label>
-				<input type="text" id="brand" class="form-control" [(ngModel)]="truckToUpdate.brand" name="brand" required>
-			</div>
-			<div class="mb-3">
-				<label for="model" class="form-label">Model</label>
-				<input type="text" id="model" class="form-control" [(ngModel)]="truckToUpdate.model" name="model" required>
-			</div>
-			<div class="mb-3">
-				<label for="year" class="form-label">Year</label>
-				<input type="number" id="year" class="form-control" [(ngModel)]="truckToUpdate.year" name="year" required>
-			</div>
-			<div class="mb-3">
-				<label for="capacity" class="form-label">Capacity</label>
-				<input type="number" id="capacity" class="form-control" [(ngModel)]="truckToUpdate.capacity" name="capacity" required>
-			</div>
-			<div class="mb-3">
-				<label for="status" class="form-label">Status</label>
-				<input type="text" id="status" class="form-control" [(ngModel)]="truckToUpdate.status" name="status" required>
-			</div>
-			<div class="mb-3">
-				<label for="lastMaintenance" class="form-label">Last Maintenance</label>
-				<input type="date" id="lastMaintenance" class="form-control" [(ngModel)]="truckToUpdate.lastMaintenance" name="lastMaintenance" required>
-			</div>
-			<button type="submit" class="btn btn-primary">Update</button>
-		</form>
-	</div>
+    <div class="modal-header">
+        <h4 class="modal-title">Update Truck Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form #updateForm="ngForm" (ngSubmit)="updateTruck()">
+            <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input type="text" id="id" class="form-control" [(ngModel)]="truckToUpdate.id" name="id" readonly />
+            </div>
+            <div class="mb-3">
+                <label for="plate" class="form-label">Plate</label>
+                <input type="text" id="plate" class="form-control" [(ngModel)]="truckToUpdate.plate" name="plate" required />
+            </div>
+            <div class="mb-3">
+                <label for="brand" class="form-label">Brand</label>
+                <input type="text" id="brand" class="form-control" [(ngModel)]="truckToUpdate.brand" name="brand" required />
+            </div>
+            <div class="mb-3">
+                <label for="model" class="form-label">Model</label>
+                <input type="text" id="model" class="form-control" [(ngModel)]="truckToUpdate.model" name="model" required />
+            </div>
+            <div class="mb-3">
+                <label for="capacity" class="form-label">Capacity</label>
+                <input type="text" id="capacity" class="form-control" [(ngModel)]="truckToUpdate.capacity" name="capacity" required />
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <input type="text" id="status" class="form-control" [(ngModel)]="truckToUpdate.status" name="status" required />
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <input type="number" id="year" class="form-control" [(ngModel)]="truckToUpdate.year" name="year" required />
+            </div>
+            <div class="mb-3">
+                <label for="lastMaintenance" class="form-label">Last Maintenance</label>
+                <input type="date" id="lastMaintenance" class="form-control" [(ngModel)]="truckToUpdate.lastMaintenance" name="lastMaintenance" required />
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid">Update Truck</button>
+        </form>
+    </div>
 </ng-template>
+
+
 
 <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(updateModal)">
 	Open Update Modal
