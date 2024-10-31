@@ -36,6 +36,12 @@ npm run start:prod
 ```
 
 ### Docker
+Exemple de config pour docker (fichier `config/local-production.yml`):
+```yml
+mongodb:
+  uri: "mongodb://root:motdepasse@mongo:27017/truckManager?authSource=admin"
+```
+
 Dupliquer le fichier [`docker-compose.yml.dist`](docker-compose.yml.dist), le renommer en `docker-compose.yml`.\
 Configurer les variables d'environnement manquantes, et si besoin, modifier la configuration.
 
