@@ -1,0 +1,94 @@
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Plate</th>
+			<th scope="col">Brand</th>
+			<th scope="col">Model</th>
+			<th scope="col">Year</th>
+			<th scope="col">Capacity</th>
+			<th scope="col">Status</th>
+			<th scope="col">Last Maintenance</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (truck of trucks; track truck.id) {
+			<tr>
+				<th scope="row">{{ truck.id }}</th>
+				<td>{{ truck.plate }}</td>
+				<td>{{ truck.brand }}</td>
+				<td>{{ truck.model }}</td>
+				<td>{{ truck.year }}</td>
+				<td>{{ truck.capacity }}</td>
+				<td>{{ truck.status }}</td>
+				<td>{{ truck.lastMaintenance  }}</td>
+				<td>
+					<button class="btn btn-primary" (click)="openUpdateModal(truck, updateModal)">Update</button>
+					<button class="btn btn-danger" (click)="deleteTruck(truck)">Delete</button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+	<ngb-pagination
+		[collectionSize]="collectionSize"
+		[(page)]="page"
+		[pageSize]="pageSize"
+		(pageChange)="refreshTrucks()"
+	>
+	</ngb-pagination>
+
+	<select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshTrucks()">
+		<option [ngValue]="2">2 items per page</option>
+		<option [ngValue]="4">4 items per page</option>
+		<option [ngValue]="6">6 items per page</option>
+
+	</select>
+</div>
+
+<ng-template #updateModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Update Truck Details</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #updateForm="ngForm" (ngSubmit)="updateTruck(truckToUpdate)">
+			<div class="mb-3">
+				<label for="plate" class="form-label">Plate</label>
+				<input type="text" id="plate" class="form-control" [(ngModel)]="truckToUpdate.plate" name="plate" required>
+			</div>
+			<div class="mb-3">
+				<label for="brand" class="form-label">Brand</label>
+				<input type="text" id="brand" class="form-control" [(ngModel)]="truckToUpdate.brand" name="brand" required>
+			</div>
+			<div class="mb-3">
+				<label for="model" class="form-label">Model</label>
+				<input type="text" id="model" class="form-control" [(ngModel)]="truckToUpdate.model" name="model" required>
+			</div>
+			<div class="mb-3">
+				<label for="year" class="form-label">Year</label>
+				<input type="number" id="year" class="form-control" [(ngModel)]="truckToUpdate.year" name="year" required>
+			</div>
+			<div class="mb-3">
+				<label for="capacity" class="form-label">Capacity</label>
+				<input type="number" id="capacity" class="form-control" [(ngModel)]="truckToUpdate.capacity" name="capacity" required>
+			</div>
+			<div class="mb-3">
+				<label for="status" class="form-label">Status</label>
+				<input type="text" id="status" class="form-control" [(ngModel)]="truckToUpdate.status" name="status" required>
+			</div>
+			<div class="mb-3">
+				<label for="lastMaintenance" class="form-label">Last Maintenance</label>
+				<input type="date" id="lastMaintenance" class="form-control" [(ngModel)]="truckToUpdate.lastMaintenance" name="lastMaintenance" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form>
+	</div>
+</ng-template>
+
+<button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(updateModal)">
+	Open Update Modal
+</button>

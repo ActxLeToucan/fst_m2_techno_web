@@ -1,0 +1,58 @@
+/* General form styles */
+form {
+    max-width: 500px; /* Maximum width for the form */
+    margin: 20px auto; /* Center the form */
+    padding: 20px; /* Padding around the form */
+    border: 1px solid #ccc; /* Light border around the form */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Style for each input label */
+label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: bold; /* Bold font for labels */
+}
+
+/* Style for input fields */
+input {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Padding inside inputs */
+    margin-bottom: 20px; /* Space below inputs */
+    border: 1px solid #ccc; /* Light border for inputs */
+    border-radius: 4px; /* Rounded corners for inputs */
+    font-size: 14px; /* Font size for inputs */
+    transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+/* Style for input fields on focus */
+input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Style for the submit button */
+button {
+    padding: 10px 15px; /* Padding for button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners for button */
+    background-color: #007bff; /* Primary button color */
+    color: #fff; /* White text */
+    font-size: 16px; /* Font size for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Error messages styles */
+p {
+    color: #dc3545; /* Red color for error messages */
+    font-size: 12px; /* Smaller font for error messages */
+    margin: 0; /* Remove default margin */
+}

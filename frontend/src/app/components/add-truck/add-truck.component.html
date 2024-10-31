@@ -1,0 +1,59 @@
+<form [formGroup]="truckForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label for="plate">Plate:</label>
+        <input id="plate" formControlName="plate" required />
+        <p *ngIf="truckForm.get('plate')?.invalid && (truckForm.get('plate')?.touched || truckForm.get('plate')?.dirty)">
+            Plate is required.
+        </p>
+    </div>
+
+    <div>
+        <label for="brand">Brand:</label>
+        <input id="brand" formControlName="brand" required />
+        <p *ngIf="truckForm.get('brand')?.invalid && (truckForm.get('brand')?.touched || truckForm.get('brand')?.dirty)">
+            Brand is required.
+        </p>
+    </div>
+
+    <div>
+        <label for="model">Model:</label>
+        <input id="model" formControlName="model" required />
+        <p *ngIf="truckForm.get('model')?.invalid && (truckForm.get('model')?.touched || truckForm.get('model')?.dirty)">
+            Model is required.
+        </p>
+    </div>
+
+    <div>
+        <label for="capacity">Capacity:</label>
+        <input id="capacity" formControlName="capacity" required />
+        <p *ngIf="truckForm.get('capacity')?.invalid && (truckForm.get('capacity')?.touched || truckForm.get('capacity')?.dirty)">
+            Capacity is required.
+        </p>
+    </div>
+
+    <div>
+        <label for="status">Status:</label>
+        <input id="status" formControlName="status" required />
+        <p *ngIf="truckForm.get('status')?.invalid && (truckForm.get('status')?.touched || truckForm.get('status')?.dirty)">
+            Status is required.
+        </p>
+    </div>
+
+    <div>
+        <label for="year">Year:</label>
+        <input type="number" id="year" formControlName="year" required />
+        <p *ngIf="truckForm.get('year')?.invalid && (truckForm.get('year')?.touched || truckForm.get('year')?.dirty)">
+            Year is required and must be valid.
+        </p>
+    </div>
+
+    <div>
+        <label for="lastMaintenance">Last Maintenance:</label>
+        <input type="date" id="lastMaintenance" formControlName="lastMaintenance" required />
+        <p *ngIf="truckForm.get('lastMaintenance')?.invalid && (truckForm.get('lastMaintenance')?.touched || truckForm.get('lastMaintenance')?.dirty)">
+            Last Maintenance date is required.
+        </p>
+    </div>
+
+    <button type="submit" [disabled]="truckForm.invalid">Add Truck</button>
+</form>
