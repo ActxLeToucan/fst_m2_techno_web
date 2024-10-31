@@ -1,0 +1,13 @@
+name: fst_m2_techno_web-backend-dev
+
+services:
+  mongo:
+    image: mongo
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: motdepasse
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/dev/db:/data/db
