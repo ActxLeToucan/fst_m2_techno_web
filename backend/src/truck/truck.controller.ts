@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 import { TruckService } from './truck.service';
 import { Observable } from 'rxjs';
 import { HandlerParams } from './validators/handler-params';
@@ -13,6 +13,7 @@ import {
 import { HttpExceptionResponse } from '../app.types';
 import { TruckEntity } from './entities/truck.entity';
 import { CreateTruckDto } from './dto/create-truck.dto';
+import { UpdateTruckDto } from './dto/update-truck.dto';
 
 @Controller('truck')
 @ApiTags('Truck')
@@ -42,5 +43,22 @@ export class TruckController {
     @Post()
     create (@Body() body: CreateTruckDto): Observable<TruckEntity> {
         return this.truckService.create(body);
+    }
+
+    @ApiOkResponse({ description: 'Truck successfully deleted' })
+    @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
+    @ApiBadRequestResponse({ description: 'Bad request', type: HttpExceptionResponse })
+    @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT) // Use 204 status code for successful delete without content
+    delete(@Param('id') id: string): Observable<void> {
+        return this.truckService.delete(id);
+    }
+
+    @ApiOkResponse({ description: 'Truck successfully updated', type: TruckEntity })
+    @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
+    @ApiBadRequestResponse({ description: 'Bad request', type: HttpExceptionResponse })
+    @Put(':id') // Change from ':plate' to ':id'
+    update(@Param('id') id: string, @Body() body: UpdateTruckDto): Observable<TruckEntity> {
+        return this.truckService.update(id, body);
     }
 }

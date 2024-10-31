@@ -14,6 +14,13 @@ async function bootstrap (config: AppConfig, openApiConfig: OpenApiConfig) {
         new FastifyAdapter({ logger: true }),
     );
 
+    // Enable CORS for all origins or specify your frontend URL
+    app.enableCors({
+        origin: 'http://localhost:4200', // Replace with your frontend URL if necessary
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    });
+
     // enable validation
     app.useGlobalPipes(
         new ValidationPipe({
