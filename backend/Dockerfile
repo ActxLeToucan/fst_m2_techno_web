@@ -10,6 +10,7 @@ RUN chmod +x /wait
 RUN mkdir -p /usr/app
 COPY . /usr/app/
 WORKDIR /usr/app
+RUN npm config set registry https://registry.npmjs.org/
 RUN npm ci --verbose
 RUN npm run build
 
