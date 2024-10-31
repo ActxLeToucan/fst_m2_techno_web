@@ -1,5 +1,5 @@
 server:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 3000
 openapi:
   title: TruckManager
@@ -9,4 +9,4 @@ openapi:
     - Truck
   path: docs
 mongodb:
-  uri: "mongodb://0.0.0.0:27017/truckManager"
+  uri: "mongodb://root:motdepasse@0.0.0.0:27017/truckManager?authSource=admin"

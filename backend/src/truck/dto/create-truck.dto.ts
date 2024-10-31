@@ -8,7 +8,7 @@ export class CreateTruckDto {
     @ApiProperty({
         name: 'plate',
         description: 'Immatriculation',
-        example: 'AA-123-BB',
+        example: 'AA123BB',
     })
     plate: string;
 

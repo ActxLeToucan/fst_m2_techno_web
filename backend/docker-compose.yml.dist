@@ -1,0 +1,29 @@
+name: fst_m2_techno_web-backend
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: 'lts'
+    restart: on-failure
+    depends_on:
+      - mongo
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      WAIT_HOSTS: mongo:27017
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 5
+      WAIT_HOST_CONNECT_TIMEOUT: 5
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root # TODO: change this
+      MONGO_INITDB_ROOT_PASSWORD: motdepasse # TODO: change this
+    volumes:
+      - ./data/prod/db:/data/db
