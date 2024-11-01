@@ -9,10 +9,11 @@ import {
     Param,
     Post,
     Put,
-    UseInterceptors
+    Res,
+    UseInterceptors,
 } from '@nestjs/common';
 import { TruckService } from './truck.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HandlerParams } from './validators/handler-params';
 import {
     ApiBadRequestResponse,
@@ -21,29 +22,30 @@ import {
     ApiNoContentResponse,
     ApiNotFoundResponse,
     ApiOkResponse,
-    ApiTags
+    ApiTags,
 } from '@nestjs/swagger';
 import { HttpExceptionResponse } from '../app.types';
 import { TruckEntity } from './entities/truck.entity';
 import { CreateTruckDto } from './dto/create-truck.dto';
 import { UpdateTruckDto } from './dto/update-truck.dto';
+import { FastifyReply } from 'fastify';
 
 @Controller('truck')
 @ApiTags('Truck')
 @UseInterceptors(ClassSerializerInterceptor)
 export class TruckController {
     constructor (
-        private readonly truckService: TruckService
+        private readonly truckService: TruckService,
     ) {
     }
 
-    @ApiOkResponse({ description: 'Get all trucks', type: TruckEntity, isArray: true, })
+    @ApiOkResponse({ description: 'Get all trucks', type: TruckEntity, isArray: true })
     @Get()
     findAll (): Observable<TruckEntity[]> {
         return this.truckService.findAll();
     }
 
-    @ApiOkResponse({ description: 'Get a truck by its registration number', type: TruckEntity, })
+    @ApiOkResponse({ description: 'Get a truck by its registration number', type: TruckEntity })
     @ApiBadRequestResponse({ description: 'Bad request', type: HttpExceptionResponse })
     @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
     @Get(':plate')
@@ -51,11 +53,13 @@ export class TruckController {
         return this.truckService.findOne(params.plate);
     }
 
-    @ApiCreatedResponse({ description: 'Truck successfully created', type: TruckEntity, })
+    @ApiCreatedResponse({ description: 'Truck successfully created', type: TruckEntity })
     @ApiConflictResponse({ description: 'Truck already exists', type: HttpExceptionResponse })
     @Post()
-    create (@Body() body: CreateTruckDto): Observable<TruckEntity> {
-        return this.truckService.create(body);
+    create (@Res({ passthrough: true }) res: FastifyReply, @Body() body: CreateTruckDto): Observable<TruckEntity> {
+        return this.truckService.create(body).pipe(
+            tap((truck) => res.header('Location', `/truck/${truck.plate}`)),
+        );
     }
 
     @ApiNoContentResponse({ description: 'Truck successfully deleted' })

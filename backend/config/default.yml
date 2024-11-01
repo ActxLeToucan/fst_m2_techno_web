@@ -10,3 +10,9 @@ openapi:
   path: docs
 mongodb:
   uri: "mongodb://root:motdepasse@0.0.0.0:27017/truckManager?authSource=admin"
+cors:
+  origin: "http://localhost:4200"
+  methods: "GET,POST,PUT,DELETE,OPTIONS,HEAD"
+  allowedHeaders: "Content-Type, Accept"
+  exposedHeaders: "Location"
+  credentials: false

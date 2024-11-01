@@ -7,19 +7,15 @@ import { AppConfig, OpenApiConfig } from './app.types';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { TruckModule } from './truck/truck.module';
 import { HealthcheckModule } from './healthcheck/healthcheck.module';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
-async function bootstrap (config: AppConfig, openApiConfig: OpenApiConfig) {
+async function bootstrap (config: AppConfig, corsConfig: CorsOptions, openApiConfig: OpenApiConfig) {
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
         new FastifyAdapter({ logger: true }),
     );
 
-    // Enable CORS for all origins or specify your frontend URL
-    app.enableCors({
-        origin: 'http://localhost:4200', // Replace with your frontend URL if necessary
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true,
-    });
+    app.enableCors(corsConfig);
 
     // enable validation
     app.useGlobalPipes(
@@ -53,6 +49,7 @@ async function bootstrap (config: AppConfig, openApiConfig: OpenApiConfig) {
 
 bootstrap(
     Config.get<AppConfig>('server'),
+    Config.get<CorsOptions>('cors'),
     Config.get<OpenApiConfig>('openapi')
 );
 
