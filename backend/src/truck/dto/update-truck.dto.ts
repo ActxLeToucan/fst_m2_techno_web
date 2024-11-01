@@ -1,31 +1,65 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsYearLowerOrEqualThanCurrentYear } from '../../shared/year.validator';
 
 export class UpdateTruckDto {
     @IsOptional()
     @IsString()
-    plate?: string; 
+    @IsNotEmpty()
+    @ApiProperty({
+        name: 'brand',
+        description: 'Brand',
+        example: 'Renault',
+    })
+    brand?: string;
 
     @IsOptional()
     @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        name: 'model',
+        description: 'Model',
+        example: 'T',
+    })
     model?: string;
 
     @IsOptional()
     @IsString()
-    brand?: string; 
+    @IsNotEmpty()
+    @ApiProperty({
+        name: 'capacity',
+        description: 'Capacity',
+        example: '8m3',
+    })
+    capacity?: string;
 
     @IsOptional()
     @IsString()
-    capacity?: string; // Kept as string based on your example
+    @IsNotEmpty()
+    @ApiProperty({
+        name: 'status',
+        description: 'Status',
+        example: 'Maintenance',
+    })
+    status?: string;
 
     @IsOptional()
-    @IsString()
-    status?: string; // Added status
+    @IsInt()
+    @Min(1900)
+    @IsYearLowerOrEqualThanCurrentYear({ message: 'year must be lower or equal to the current year' })
+    @ApiProperty({
+        name: 'year',
+        description: 'Year of commissioning',
+        example: 2021,
+    })
+    year?: number;
 
     @IsOptional()
-    @IsNumber()
-    year?: number; // Added year
-
-    @IsOptional()
-    @IsString()
-    lastMaintenance?: string; // Kept as string for the date format
+    @IsDateString()
+    @ApiProperty({
+        name: 'lastMaintenance',
+        description: 'Date of last maintenance',
+        example: '2021-07-12T00:00:00.000Z',
+    })
+    lastMaintenance?: string;
 }

@@ -1,6 +1,6 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
-export function IsYearLowerOrEqualThanCurrentYear( validationOptions?: ValidationOptions) {
+export function IsYearLowerOrEqualThanCurrentYear (validationOptions?: ValidationOptions) {
     return function (object: Object, propertyName: string) {
         registerDecorator({
             name: 'IsYearLowerOrEqualThanCurrentYear',
@@ -8,7 +8,7 @@ export function IsYearLowerOrEqualThanCurrentYear( validationOptions?: Validatio
             propertyName: propertyName,
             options: validationOptions,
             validator: {
-                validate(value: any) {
+                validate (value: any) {
                     return value <= new Date().getFullYear();
                 },
             },

@@ -9,7 +9,7 @@ export class HealthcheckController {
         type: String
     })
     @Get()
-    healthcheck(): Observable<string> {
+    healthcheck (): Observable<string> {
         return of('OK');
     }
 }
