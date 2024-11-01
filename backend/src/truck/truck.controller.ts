@@ -48,9 +48,9 @@ export class TruckController {
     @ApiOkResponse({ description: 'Get a truck by its registration number', type: TruckEntity })
     @ApiBadRequestResponse({ description: 'Bad request', type: HttpExceptionResponse })
     @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
-    @Get(':plate')
+    @Get(':id')
     findOne (@Param() params: HandlerParams): Observable<TruckEntity> {
-        return this.truckService.findOne(params.plate);
+        return this.truckService.findOne(params.id);
     }
 
     @ApiCreatedResponse({ description: 'Truck successfully created', type: TruckEntity })
@@ -58,7 +58,7 @@ export class TruckController {
     @Post()
     create (@Res({ passthrough: true }) res: FastifyReply, @Body() body: CreateTruckDto): Observable<TruckEntity> {
         return this.truckService.create(body).pipe(
-            tap((truck) => res.header('Location', `/truck/${truck.plate}`)),
+            tap((truck) => res.header('Location', `/truck/${truck.id}`)),
         );
     }
 
@@ -67,15 +67,15 @@ export class TruckController {
     @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    delete (@Param('id') id: string): Observable<void> {
-        return this.truckService.delete(id);
+    delete (@Param() params: HandlerParams): Observable<void> {
+        return this.truckService.delete(params.id);
     }
 
     @ApiOkResponse({ description: 'Truck successfully updated', type: TruckEntity })
     @ApiNotFoundResponse({ description: 'Truck not found', type: HttpExceptionResponse })
     @ApiBadRequestResponse({ description: 'Bad request', type: HttpExceptionResponse })
     @Put(':id')
-    update (@Param('id') id: string, @Body() body: UpdateTruckDto): Observable<TruckEntity> {
-        return this.truckService.update(id, body);
+    update (@Param() params: HandlerParams, @Body() body: UpdateTruckDto): Observable<TruckEntity> {
+        return this.truckService.update(params.id, body);
     }
 }

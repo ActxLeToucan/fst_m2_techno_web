@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
@@ -12,17 +12,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 })
 export class Truck {
     @Prop({
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true,
-    })
-    _id: any;
-
-    @Prop({
         type: String,
         required: true,
         trim: true,
     })
-    plate: string;
+    _id: string;
 
     @Prop({
         type: String,
@@ -56,7 +50,7 @@ export class Truck {
         type: String,
         required: true,
         trim: true,
-        default: 'Available'
+        default: 'Available',
     })
     status: string;
 

@@ -5,19 +5,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export class TruckEntity {
     @ApiProperty({
         name: 'id',
-        description: 'Unique identifier in the database',
-        example: '5763cd4dc378a38ecd387737',
-    })
-    @Expose()
-    id: string;
-
-    @ApiProperty({
-        name: 'plate',
-        description: 'Immatriculation',
+        description: 'Plate number',
         example: 'AA123BB',
     })
     @Expose()
-    plate: string;
+    id: string;
 
     @ApiProperty({
         name: 'brand',

@@ -6,11 +6,11 @@ export class CreateTruckDto {
     @IsString()
     @Matches(/^[A-Z]{2}[0-9]{3}[A-Z]{2}$/, { message: 'Invalid truck registration number' })
     @ApiProperty({
-        name: 'plate',
+        name: 'id',
         description: 'Immatriculation',
         example: 'AA123BB',
     })
-    plate: string;
+    id: string;
 
     @IsString()
     @IsNotEmpty()
