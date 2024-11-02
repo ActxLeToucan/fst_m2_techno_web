@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, TemplateRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
@@ -7,15 +7,22 @@ import { TruckEntity } from '../../services/listTruck/entities/truck.entity';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ToastService } from '../../services/toastService/toast.service';
 import { UpdateTruckDto } from '../../services/listTruck/dto/update-truck.dto';
+import { ToastsContainer } from './toast-container.compnent';
 
 @Component({
   selector: 'app-list-truck',
   standalone: true,
-  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule],
+  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule, ToastsContainer],
   templateUrl: './list-truck.component.html',
   styleUrls: ['./list-truck.component.scss'],
 })
-export class ListTruckComponent implements OnInit {
+export class ListTruckComponent implements OnInit, OnDestroy {
+  @ViewChild('successTpl', { static: true }) successTpl!: TemplateRef<any>;
+  @ViewChild('errorTpl', { static: true }) errorTpl!: TemplateRef<any>;
+
+  @ViewChild('successUpdate', { static: true }) successUpdate!: TemplateRef<any>;
+  @ViewChild('errorUpdate', { static: true }) errorUpdate!: TemplateRef<any>;
+
   private modalService = inject(NgbModal);
   public truckToUpdate: any;
   // Implement OnInit for lifecycle hook
@@ -26,7 +33,7 @@ export class ListTruckComponent implements OnInit {
 
   constructor(
     private listTrucksService: ListTrucksService,
-    private toastService: ToastService
+    private toastService: ToastService = inject(ToastService)
   ) {} // Inject the service
 
   ngOnInit() {
@@ -52,14 +59,14 @@ export class ListTruckComponent implements OnInit {
       next: () => {
         this.trucks = this.trucks.filter((t) => t.plate !== truck.plate);
         this.toastService.show({
-          template: `Truck ${truck.plate} deleted successfully!`,
+          template: this.successTpl,
           classname: 'bg-success text-light',
         });
       },
       error: (error) => {
         console.error('Error deleting truck:', error);
         this.toastService.show({
-          template: `Failed to delete truck ${truck.plate}.`,
+          template: this.errorTpl,
           classname: 'bg-danger text-light',
         });
       },
@@ -91,7 +98,7 @@ export class ListTruckComponent implements OnInit {
         next: (updatedTruck) => {
             console.log('Truck updated successfully:', updatedTruck);
             this.toastService.show({
-                template: `Truck ${updatedTruck.id} updated successfully.`,
+                template: this.successUpdate,
                 classname: 'bg-success text-light',
             });
             this.modalService.dismissAll(); // Close the modal
@@ -100,7 +107,7 @@ export class ListTruckComponent implements OnInit {
         error: (error) => {
             console.error('Error updating truck:', error);
             this.toastService.show({
-                template: `Failed to update truck ${this.truckToUpdate.id}.`,
+                template: this.errorUpdate,
                 classname: 'bg-danger text-light',
             });
         },
@@ -116,4 +123,9 @@ export class ListTruckComponent implements OnInit {
       .map((truck, i) => ({ displayId: i + 1, ...truck }))
       .slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
   }
+
+  ngOnDestroy(): void {
+		this.toastService.clear();
+	}
+
 }
