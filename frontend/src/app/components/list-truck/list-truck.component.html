@@ -87,24 +87,13 @@
   <div class="modal-body">
     <form #updateForm="ngForm" (ngSubmit)="updateTruck()">
       <div class="mb-3">
-        <label for="id" class="form-label">ID</label>
+        <label for="id" class="form-label">Plate</label>
         <input
           type="text"
           id="id"
           class="form-control"
           [(ngModel)]="truckToUpdate.id"
           name="id"
-          readonly
-        />
-      </div>
-      <div class="mb-3">
-        <label for="plate" class="form-label">Plate</label>
-        <input
-          type="text"
-          id="plate"
-          class="form-control"
-          [(ngModel)]="truckToUpdate.plate"
-          name="plate"
           readonly
         />
       </div>

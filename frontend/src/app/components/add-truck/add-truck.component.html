@@ -1,7 +1,7 @@
 <form [formGroup]="truckForm" (ngSubmit)="onSubmit()">
     <div>
         <label for="plate">Plate:</label>
-        <input id="plate" formControlName="plate" required />
+        <input id="plate" formControlName="id" required />
         <p *ngIf="truckForm.get('plate')?.invalid && (truckForm.get('plate')?.touched || truckForm.get('plate')?.dirty)">
             Plate is required.
         </p>

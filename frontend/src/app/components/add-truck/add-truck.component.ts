@@ -20,7 +20,7 @@ export class AddTruckComponent {
     private router: Router
   ) {
     this.truckForm = this.fb.group({
-      plate: ['', Validators.required],
+      id: ['', Validators.required],
       brand: ['', Validators.required],
       model: ['', Validators.required],
       capacity: ['', Validators.required],
