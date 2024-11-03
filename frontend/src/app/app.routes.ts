@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ListTruckComponent } from './components/list-truck/list-truck.component';
-import { UpdateTruckComponent } from './components/update-truck/update-truck.component';
 import { AddTruckComponent } from './components/add-truck/add-truck.component';
 import { MainComponent } from './components/main/main.component';
 
@@ -13,7 +12,6 @@ export const routes: Routes = [
         children: [
             { path: '', component: NavbarComponent }, 
             { path: 'lister-camions', component: ListTruckComponent },
-            { path: 'update-camion', component: UpdateTruckComponent },
             { path: 'ajouter-camion', component: AddTruckComponent }
         ]
     }

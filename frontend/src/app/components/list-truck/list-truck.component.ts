@@ -55,9 +55,9 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   }
 
   deleteTruck(truck: TruckEntity) {
-    this.listTrucksService.delete(truck.plate).subscribe({
+    this.listTrucksService.delete(truck.id).subscribe({
       next: () => {
-        this.trucks = this.trucks.filter((t) => t.plate !== truck.plate);
+        this.trucks = this.trucks.filter((t) => t.id !== truck.id);
         this.toastService.show({
           template: this.successTpl,
           classname: 'bg-success text-light',
