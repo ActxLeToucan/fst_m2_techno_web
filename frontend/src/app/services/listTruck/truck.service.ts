@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { CreateTruckDto } from './dto/create-truck.dto.js';
 import { TruckEntity } from './entities/truck.entity.js'; 
 import { UpdateTruckDto } from './dto/update-truck.dto.js';
+import { environment } from '../../../environments/environment.js';
 @Injectable({
   providedIn: 'root',
 })
 export class ListTrucksService {
-  private baseUrl = 'http://localhost:3000/truck'; // Base URL for your NestJS API
+  private baseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
 
