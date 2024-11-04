@@ -75,6 +75,12 @@ export class ListTruckComponent implements OnInit, OnDestroy {
 
   openUpdateModal(truck: any, updateModal: TemplateRef<any>) {
     this.truckToUpdate = { ...truck }; // Clone the truck to update
+    if (this.truckToUpdate.lastMaintenance) {
+      this.truckToUpdate.lastMaintenance = new Date(this.truckToUpdate.lastMaintenance)
+        .toISOString()
+        .split('T')[0];
+    }  
+    console.log(truck);
     this.openVerticallyCentered(updateModal); // Open the modal
   }
 
