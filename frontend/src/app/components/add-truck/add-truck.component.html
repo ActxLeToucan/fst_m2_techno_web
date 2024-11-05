@@ -49,10 +49,7 @@
 
     <div>
         <label for="lastMaintenance">Last Maintenance:</label>
-        <input type="date" id="lastMaintenance" formControlName="lastMaintenance" required />
-        <p *ngIf="truckForm.get('lastMaintenance')?.invalid && (truckForm.get('lastMaintenance')?.touched || truckForm.get('lastMaintenance')?.dirty)">
-            Last Maintenance date is required.
-        </p>
+        <input type="date" id="lastMaintenance" formControlName="lastMaintenance" />
     </div>
 
     <button type="submit" [disabled]="truckForm.invalid">Add Truck</button>

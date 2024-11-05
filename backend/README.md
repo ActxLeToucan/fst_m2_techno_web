@@ -3,6 +3,8 @@
 Créer un fichier `local-development.yml` ou `local-production.yml` dans le dossier [config](./config).
 Complétez-le pour écraser les valeurs de la [config par défaut](config/default.yml).
 
+Pour avoir des données d'exemple, définissez `initData.enabled` à `true` ou `ifEmpty`.
+
 ## Développement
 Dupliquer le fichier [`docker-compose.dev.yml.dist`](docker-compose.dev.yml.dist) en `docker-compose.dev.yml`.\
 Modifier les informations de connexion à la base de données si besoin.
@@ -40,6 +42,8 @@ Exemple de config pour docker (fichier `config/local-production.yml`):
 ```yml
 mongodb:
   uri: "mongodb://root:motdepasse@mongo:27017/truckManager?authSource=admin"
+initData:
+  enabled: false
 ```
 
 Dupliquer le fichier [`docker-compose.yml.dist`](docker-compose.yml.dist), le renommer en `docker-compose.yml`.\

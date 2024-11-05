@@ -26,7 +26,7 @@ export class AddTruckComponent {
       capacity: ['', Validators.required],
       status: ['', Validators.required],
       year: [null, [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]], // year must be valid
-      lastMaintenance: ['', Validators.required],
+      lastMaintenance: [null],
     });
   }
 

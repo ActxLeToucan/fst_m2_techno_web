@@ -13,6 +13,10 @@ export interface OpenApiConfig {
     path: string;
 }
 
+export interface InitDataConfig {
+    enabled: boolean | 'ifEmpty';
+}
+
 
 export class HttpExceptionResponse {
     @ApiProperty({
