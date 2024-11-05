@@ -52,7 +52,7 @@ export class TruckInitdbService implements OnModuleInit {
     }
 
     private randomPlate(): string {
-        return `${this.randomLetter()}${this.randomLetter()}${this.randomNb(9)}${this.randomNb(9)}${this.randomNb(9)}${this.randomLetter()}${this.randomLetter()}${this.randomNb(9)}`;
+        return `${this.randomLetter()}${this.randomLetter()}${this.randomNb(9)}${this.randomNb(9)}${this.randomNb(9)}${this.randomLetter()}${this.randomLetter()}`;
     }
 
     private randomLetter(): string {
