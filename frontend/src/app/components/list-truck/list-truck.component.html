@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (truck of trucks; track truck.id) {
+    @for (truck of displayedTrucks; track truck.id) {
     <tr>
       <td>{{ truck.id }}</td>
       <td>{{ truck.brand }}</td>

@@ -30,11 +30,14 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   pageSize = 2;
   collectionSize = 0; // Initialize to 0
   trucks: TruckEntity[] = []; // Update the type to TruckEntity
+  displayedTrucks: TruckEntity[] = []; 
 
   constructor(
     private listTrucksService: ListTrucksService,
     private toastService: ToastService = inject(ToastService)
-  ) {} // Inject the service
+  ) {
+    this.refreshTrucks();
+  } // Inject the service
 
   ngOnInit() {
     // Fetch trucks when the component initializes
@@ -46,7 +49,8 @@ export class ListTruckComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.trucks = data;
         this.collectionSize = data.length; // Update the collection size
-        this.refreshTrucks(); // Call refreshTrucks to paginate
+        this.refreshTrucks();
+     
       },
       error: (error) => {
         console.error('Error fetching trucks:', error); // Handle errors
@@ -125,9 +129,11 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   }
 
   refreshTrucks() {
-    this.trucks = this.trucks
+    this.displayedTrucks = this.trucks
       .map((truck, i) => ({ displayId: i + 1, ...truck }))
       .slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
+    console.log(this.trucks);
+
   }
 
   ngOnDestroy(): void {
