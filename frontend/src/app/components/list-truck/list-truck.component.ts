@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListTrucksService } from '../../services/listTruck/truck.service';
@@ -12,7 +12,7 @@ import { ToastsContainer } from './toast-container.compnent';
 @Component({
   selector: 'app-list-truck',
   standalone: true,
-  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule, ToastsContainer],
+  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule, ToastsContainer, DatePipe],
   templateUrl: './list-truck.component.html',
   styleUrls: ['./list-truck.component.scss'],
 })
@@ -30,7 +30,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   pageSize = 2;
   collectionSize = 0; // Initialize to 0
   trucks: TruckEntity[] = []; // Update the type to TruckEntity
-  displayedTrucks: TruckEntity[] = []; 
+  displayedTrucks: TruckEntity[] = [];
 
   constructor(
     private listTrucksService: ListTrucksService,
@@ -50,7 +50,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
         this.trucks = data;
         this.collectionSize = data.length; // Update the collection size
         this.refreshTrucks();
-     
+
       },
       error: (error) => {
         console.error('Error fetching trucks:', error); // Handle errors
@@ -83,7 +83,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
       this.truckToUpdate.lastMaintenance = new Date(this.truckToUpdate.lastMaintenance)
         .toISOString()
         .split('T')[0];
-    }  
+    }
     console.log(truck);
     this.openVerticallyCentered(updateModal); // Open the modal
   }
@@ -112,7 +112,9 @@ export class ListTruckComponent implements OnInit, OnDestroy {
                 classname: 'bg-success text-light',
             });
             this.modalService.dismissAll(); // Close the modal
-            window.location.reload();
+            const i = this.trucks.findIndex((t) => t.id === updatedTruck.id);
+            this.trucks[i] = updatedTruck;
+            this.refreshTrucks();
         },
         error: (error) => {
             console.error('Error updating truck:', error);

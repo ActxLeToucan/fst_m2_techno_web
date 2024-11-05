@@ -9,11 +9,11 @@
 <ng-template #successUpdate>
 	<span>Truck updated successfully!</span>
   </ng-template>
-  
+
   <ng-template #errorUpdate>
 	<span>Failed to update truck.</span>
   </ng-template>
-  
+
 
 <table class="table table-striped">
   <thead>
@@ -36,7 +36,7 @@
       <td>{{ truck.year }}</td>
       <td>{{ truck.capacity }}</td>
       <td>{{ truck.status }}</td>
-      <td>{{ truck.lastMaintenance }}</td>
+      <td>{{ truck.lastMaintenance | date : 'medium' }}</td>
       <td class="buttons">
         <button
           class="btn btn-primary"
