@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ListTrucksService } from '../../services/listTruck/truck.service';
@@ -12,7 +12,7 @@ import { ToastsContainer } from './toast-container.compnent';
 @Component({
   selector: 'app-list-truck',
   standalone: true,
-  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule, ToastsContainer, DatePipe],
+  imports: [DecimalPipe, FormsModule, NgbPaginationModule, HttpClientModule, ToastsContainer, CommonModule],
   templateUrl: './list-truck.component.html',
   styleUrls: ['./list-truck.component.scss'],
 })
@@ -23,6 +23,9 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   @ViewChild('successUpdate', { static: true }) successUpdate!: TemplateRef<any>;
   @ViewChild('errorUpdate', { static: true }) errorUpdate!: TemplateRef<any>;
 
+  @ViewChild('confirmDeleteModal', { static: true }) confirmDeleteModal!: TemplateRef<any>;
+  private truckToDelete: TruckEntity | null = null;
+
   private modalService = inject(NgbModal);
   public truckToUpdate: any;
   // Implement OnInit for lifecycle hook
@@ -30,7 +33,8 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   pageSize = 2;
   collectionSize = 0; // Initialize to 0
   trucks: TruckEntity[] = []; // Update the type to TruckEntity
-  displayedTrucks: TruckEntity[] = [];
+  displayedTrucks: TruckEntity[] = []; 
+  dateToShow : String = '' ;
 
   constructor(
     private listTrucksService: ListTrucksService,
@@ -50,7 +54,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
         this.trucks = data;
         this.collectionSize = data.length; // Update the collection size
         this.refreshTrucks();
-
+     
       },
       error: (error) => {
         console.error('Error fetching trucks:', error); // Handle errors
@@ -66,6 +70,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
           template: this.successTpl,
           classname: 'bg-success text-light',
         });
+        this.refreshTrucks();
       },
       error: (error) => {
         console.error('Error deleting truck:', error);
@@ -77,13 +82,52 @@ export class ListTruckComponent implements OnInit, OnDestroy {
     });
   }
 
+  
+  // Method to open the confirmation modal
+  openConfirmDeleteModal(truck: TruckEntity, modal: TemplateRef<any>) {
+    this.truckToDelete = truck; // Store the truck to be deleted
+    this.modalService.open(modal, { centered: true }); // Open the modal
+  }
+
+  // Method to confirm deletion
+  confirmDelete(modal: any) {
+    if (this.truckToDelete) {
+      this.listTrucksService.delete(this.truckToDelete.id).subscribe({
+        next: () => {
+          this.trucks = this.trucks.filter((t) => t.id !== this.truckToDelete!.id);
+          this.toastService.show({
+            template: this.successTpl,
+            classname: 'bg-success text-light',
+          });
+          this.refreshTrucks();
+          this.truckToDelete = null; // Reset the truck to delete
+          modal.dismiss('Cross click'); // Close the modal
+        },
+        error: (error) => {
+          console.error('Error deleting truck:', error);
+          this.toastService.show({
+            template: this.errorTpl,
+            classname: 'bg-danger text-light',
+          });
+          this.truckToDelete = null; // Reset the truck to delete
+          modal.dismiss('Cross click'); // Close the modal
+        },
+      });
+    }
+  }
+
   openUpdateModal(truck: any, updateModal: TemplateRef<any>) {
     this.truckToUpdate = { ...truck }; // Clone the truck to update
+    // if (this.truckToUpdate.lastMaintenance) {
+    //   this.truckToUpdate.lastMaintenance = new Date(this.truckToUpdate.lastMaintenance)
+    //     .toISOString()
+    //     .split('T')[0];
+    // }  
     if (this.truckToUpdate.lastMaintenance) {
-      this.truckToUpdate.lastMaintenance = new Date(this.truckToUpdate.lastMaintenance)
+      this.dateToShow = new Date(this.truckToUpdate.lastMaintenance)
         .toISOString()
         .split('T')[0];
-    }
+    }  
     console.log(truck);
     this.openVerticallyCentered(updateModal); // Open the modal
   }
@@ -97,7 +141,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
         capacity: this.truckToUpdate.capacity,
         status: this.truckToUpdate.status,
         year: this.truckToUpdate.year,
-        lastMaintenance: this.truckToUpdate.lastMaintenance,
+        lastMaintenance: this.truckToUpdate.lastMaintenance
     };
 
     // Log the payload for debugging
@@ -112,8 +156,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
                 classname: 'bg-success text-light',
             });
             this.modalService.dismissAll(); // Close the modal
-            const i = this.trucks.findIndex((t) => t.id === updatedTruck.id);
-            this.trucks[i] = updatedTruck;
+            this.loadTrucks();
             this.refreshTrucks();
         },
         error: (error) => {
@@ -135,7 +178,6 @@ export class ListTruckComponent implements OnInit, OnDestroy {
       .map((truck, i) => ({ displayId: i + 1, ...truck }))
       .slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
     console.log(this.trucks);
-
   }
 
   ngOnDestroy(): void {
