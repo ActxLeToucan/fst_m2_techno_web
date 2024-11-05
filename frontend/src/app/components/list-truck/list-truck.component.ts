@@ -133,6 +133,7 @@ export class ListTruckComponent implements OnInit, OnDestroy {
   }
 
   updateTruck() {
+    this.truckToUpdate.lastMaintenance = this.dateToShow;
     // Create a new payload object
     const payload: UpdateTruckDto = {
         plate: this.truckToUpdate.plate,
